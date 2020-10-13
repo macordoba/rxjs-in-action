@@ -4,22 +4,20 @@
  *  @author Paul Daniels
  *  @author Luis Atencio
  */
-const progressBar$ = Rx.Observable.create(observer => {
-   const OFFSET = 3000;
-   const SPEED =  50;
+const OFFSET = 3000
+const SPEED = 50
 
-   let val = 0;
-   function progress() {
-     if(++val <= 100) {
-       observer.next(val);
-       setTimeout(progress, SPEED);
-     }
-     else {
-       observer.complete();
-     }
-   };
-   setTimeout(progress, OFFSET);
-});
+const increase = (observer) => {
+	let inc = 0
+	setInterval(
+		() => (inc <= 100 ? observer.next(inc++) : observer.complete()),
+		SPEED
+	)
+}
+
+const progressBar$ = new rxjs.Observable((observer) => {
+	setTimeout(() => increase(observer), OFFSET)
+})
 
 //--------------------------------------------------//
 //                Usage                             //
